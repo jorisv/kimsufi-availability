@@ -60,7 +60,7 @@ def get_servers(models):
   """Get the servers from the OVH API."""
 
   r = requests.get(API_URL)
-  response = r.json()['answer']['availability']
+  response = r.json['answer']['availability']
 
   search = REFERENCES
   if models:
