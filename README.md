@@ -1,6 +1,6 @@
 ## Kimsufi availability
 
-Kimsufi servers are very interesting but extremely difficult to obtain. This script parses the OVH API and sends you a mail when a server is available.
+Kimsufi servers are very interesting but extremely difficult to obtain. This script parses the OVH API and sends you a mail or a SMS when a server is available.
 
 ## Usage
 
@@ -12,11 +12,13 @@ Kimsufi servers are very interesting but extremely difficult to obtain. This scr
       -h, --help     Show this help.
       -v, --version  Show version.
       -m, --mail     Send a mail when a server is available.
+      -s, --sms      Sends a SMS using free mobile web API
 
     Examples:
       kimsufi.py
       kimsufi.py KS-1 KS-3
       kimsufi.py KS-1 --mail
+      kimsufi.py KS-1 --sms
 
 ## Output example
 
