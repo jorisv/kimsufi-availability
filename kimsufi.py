@@ -35,18 +35,26 @@ MAIL_FROM = "xxxxxx@xxxxxx.xxx"
 MAIL_TO = "xxxxxx@xxxxxx.xxx"
 
 API_URL = "https://ws.ovh.com/dedicated/r2/ws.dispatcher/getAvailability2"
-REFERENCES = {'142sk1': 'KS-1',
-              '142sk2': 'KS-2',
-              '142sk3': 'KS-3',
-              '142sk4': 'KS-4',
-              '142sk5': 'KS-5A',
-              '142sk8': 'KS-5B',
-              '142sk6': 'KS-6'}
-ZONES = {'gra': 'Gravelines',
-         'sbg': 'Strasbourg',
-         'rbx': 'Roubaix',
-         'bhs': 'Beauharnois'}
-
+REFERENCES = {'150sk10': 'KS-1',
+              '150sk20': 'KS-2a',
+              '150sk21': 'KS-2b',
+              '150sk22': 'KS-2c',
+              '150sk30': 'KS-3',
+              '150sk31': 'KS-3',
+              '150sk40': 'KS-4',
+              '150sk41': 'KS-4',
+              '150sk42': 'KS-4',
+              '150sk50': 'KS-5',
+              '150sk60': 'KS-6',
+              '141game1': 'GAME-1',
+              '141game2': 'GAME-2',
+              '141game3': 'GAME-3',
+}
+ZONES = { 'bhs': 'Beauharnois, Canada (Americas)',
+          'gra': 'Gravelines, France',
+          'rbx': 'Roubaix, France (Western Europe)',
+          'sbg': 'Strasbourg, France (Central Europe)',
+          'par': 'Paris, France'}
 
 def get_servers(models):
   """Get the servers from the OVH API."""
