@@ -11,6 +11,7 @@ Options:
   -h, --help     Show this help.
   -v, --version  Show version.
   -m, --mail     Sends a mail when a server is available.
+  -s, --sms      Sends a SMS using free mobile web API
 
 Examples:
   kimsufi.py
@@ -20,6 +21,7 @@ Examples:
 
 import sys
 import smtplib
+import urllib
 
 import requests
 from docopt import docopt
@@ -33,6 +35,10 @@ MAIL_PASSWORD = "xxxxxx"
 
 MAIL_FROM = "xxxxxx@xxxxxx.xxx"
 MAIL_TO = "xxxxxx@xxxxxx.xxx"
+
+FREE_SMS_URL = "https://smsapi.free-mobile.fr/sendmsg?"
+FREE_SMS_USER = "xxxxxxx"
+FREE_SMS_PASS = "xxxxxxx"
 
 API_URL = "https://ws.ovh.com/dedicated/r2/ws.dispatcher/getAvailability2"
 REFERENCES = {'150sk10': 'KS-1',
@@ -112,6 +118,23 @@ def send_mail(output, total):
     server.close()
 
 
+def send_sms(output, total):
+  url_args = {
+    'user': FREE_SMS_USER,
+    'pass': FREE_SMS_PASS,
+    'msg': output
+  }
+  free_sms_url_args = urllib.urlencode(url_args)
+  free_sms_full_url = FREE_SMS_URL + free_sms_url_args
+  # free certificate don't work on free-mobile url
+  r = requests.get(free_sms_full_url, verify=False)
+  if not r.ok:
+    print 'SMS notification has failed'
+    print 'Status code: %s' % r.status_code
+    return False
+  return True
+
+
 if __name__ == '__main__':
   arguments = docopt(__doc__, version=VERSION)
   kim = get_servers(arguments['<model>'])
@@ -140,5 +163,6 @@ if __name__ == '__main__':
   if total != 0 :
     if arguments['--mail']:
       send_mail(output, total)
-    else:
-      print(output)
+    if arguments['--sms']:
+      send_sms(output, total)
+    print(output)
