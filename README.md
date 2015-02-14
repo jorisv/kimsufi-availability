@@ -9,16 +9,19 @@ Kimsufi servers are very interesting but extremely difficult to obtain. This scr
       kimsufi.py <model>... [options]
 
     Options:
-      -h, --help     Show this help.
-      -v, --version  Show version.
-      -m, --mail     Send a mail when a server is available.
-      -s, --sms      Sends a SMS using free mobile web API
+     -h, --help        Show this help.
+     -v, --version     Show version.
+     -m, --mail        Sends a mail when a server is available.
+     -s, --sms         Sends a SMS using free mobile web API.
+     --loop=<seconds>  Set the script in a endless mode that check
+                       the availability every <seconds>.
 
     Examples:
       kimsufi.py
       kimsufi.py KS-1 KS-3
       kimsufi.py KS-1 --mail
       kimsufi.py KS-1 --sms
+      kimsufi.py KS-1 --sms --loop 60
 
 ## Output example
 

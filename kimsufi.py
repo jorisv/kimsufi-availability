@@ -8,10 +8,12 @@ Usage:
   kimsufi.py <model>... [options]
 
 Options:
-  -h, --help     Show this help.
-  -v, --version  Show version.
-  -m, --mail     Sends a mail when a server is available.
-  -s, --sms      Sends a SMS using free mobile web API
+  -h, --help        Show this help.
+  -v, --version     Show version.
+  -m, --mail        Sends a mail when a server is available.
+  -s, --sms         Sends a SMS using free mobile web API.
+  --loop=<seconds>  Set the script in a endless mode that check
+                    the availability every <seconds>.
 
 Examples:
   kimsufi.py
@@ -20,8 +22,10 @@ Examples:
 """
 
 import sys
+import time
 import smtplib
 import urllib
+import sched
 
 import requests
 from docopt import docopt
@@ -135,8 +139,7 @@ def send_sms(output, total):
   return True
 
 
-if __name__ == '__main__':
-  arguments = docopt(__doc__, version=VERSION)
+def check_availability(arguments):
   kim = get_servers(arguments['<model>'])
 
   total = 0
@@ -166,3 +169,18 @@ if __name__ == '__main__':
     if arguments['--sms']:
       send_sms(output, total)
     print(output)
+
+
+if __name__ == '__main__':
+  arguments = docopt(__doc__, version=VERSION)
+  if not arguments['--loop']:
+    check_availability(arguments)
+  else:
+    seconds = int(arguments['--loop'])
+    s = sched.scheduler(time.time, time.sleep)
+    def check_and_reenter():
+      check_availability(arguments)
+      s.enter(seconds, 1, check_and_reenter, ())
+
+    check_and_reenter()
+    s.run()
