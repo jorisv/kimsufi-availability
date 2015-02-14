@@ -124,7 +124,7 @@ if __name__ == '__main__':
     output += "{}\n".format("="*len(REFERENCES[k['reference']]))
 
     for z in k['zones']:
-      if z['availability'] == 'unavailable':
+      if z['availability'] in ['unknown', 'unavailable']:
         availability = z['availability']
       else:
         availability = "[OK]"
