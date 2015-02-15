@@ -163,23 +163,47 @@ def check_availability(arguments):
     ["is", "are"][total>1]
   )
 
-  if total != 0 :
-    if arguments['--mail']:
-      send_mail(output, total)
-    if arguments['--sms']:
-      send_sms(output, total)
-    print(output)
+  return output, total
+
+
+def send_notifications(arguments, output, total):
+  if arguments['--mail']:
+    send_mail(output, total)
+  if arguments['--sms']:
+    send_sms(output, total)
+  print output
+
+
+class CheckAndNotify(object):
+  def __init__(self):
+    self.has_been_notified = False
+    self.i = 0
+
+  def check_and_notify(self, arguments):
+    output, total = check_availability(arguments)
+    # trigger the notification if there is availability
+    # and user has not been already notify
+    if not self.has_been_notified and total > 0:
+      send_notifications(arguments, output, total)
+      self.has_been_notified = True
+    elif total == 0:
+      # if there is no availability we can reset
+      # the notify trigger
+      self.has_been_notified = False
 
 
 if __name__ == '__main__':
   arguments = docopt(__doc__, version=VERSION)
+
+  can = CheckAndNotify()
+
   if not arguments['--loop']:
-    check_availability(arguments)
+    can.check_and_notify(arguments)
   else:
     seconds = int(arguments['--loop'])
     s = sched.scheduler(time.time, time.sleep)
     def check_and_reenter():
-      check_availability(arguments)
+      can.check_and_notify(arguments)
       s.enter(seconds, 1, check_and_reenter, ())
 
     check_and_reenter()
