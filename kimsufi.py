@@ -79,7 +79,7 @@ def get_servers(models):
   try:
     response = r.json()['answer']['availability']
   except TypeError as e:
-    print 'Error during response reading: %', e
+    print 'Error during response reading: %s', e
     return []
 
   search = REFERENCES
