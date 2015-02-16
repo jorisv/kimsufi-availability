@@ -70,6 +70,12 @@ def get_servers(models):
   """Get the servers from the OVH API."""
 
   r = requests.get(API_URL)
+
+  if not r.ok:
+    print 'Server request has failed'
+    print 'Status code: %s' % r.status_code
+    return []
+
   response = r.json()['answer']['availability']
 
   search = REFERENCES
