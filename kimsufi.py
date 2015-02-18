@@ -69,7 +69,11 @@ ZONES = { 'bhs': 'Beauharnois, Canada (Americas)',
 def get_servers(models):
   """Get the servers from the OVH API."""
 
-  r = requests.get(API_URL)
+  try:
+    r = requests.get(API_URL)
+  except requests.exceptions.RequestException as e:
+    print 'Error while getting servers state: %s', e
+    return []
 
   if not r.ok:
     print 'Server request has failed'
